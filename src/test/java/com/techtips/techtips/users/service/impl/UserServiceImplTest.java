@@ -5,6 +5,7 @@ import com.techtips.techtips.users.model.entity.User;
 import com.techtips.techtips.users.repository.UserRepository;
 import com.techtips.techtips.users.service.UserService;
 import org.assertj.core.api.Assertions;
+import org.junit.Assert;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -44,6 +45,7 @@ class UserServiceImplTest {
     void savingUserToDatabase() {
         // Arrange
         User newUser = User.builder()
+                .id(1L)
                 .firstName("Mike")
                 .lastName("Carmine")
                 .email("MikeCarmine@gmail.com")
@@ -52,11 +54,30 @@ class UserServiceImplTest {
 
         when(userRepository.save(newUser)).thenReturn(newUser);
 
-//        Act
+        // Act
         newUser = userRepository.save(newUser);
 
+        // Assert
+        Assertions.assertThat(newUser).isInstanceOf(User.class);
+        Assertions.assertThat(newUser.getId()).isEqualTo(1L);
+    }
 
-//        Assert
-        Assertions.assertThat(newUser).isInstanceOf(Math.class);
+
+    @Test
+    @DisplayName("Map RegisterRequest DTO to User")
+    void mappingRegisterRequestToUser() {
+        // Arrange
+        RegisterRequest newUnregisteredUser = RegisterRequest.builder()
+                .firstName("Mike")
+                .lastName("Carmine")
+                .email("MikeCarmine@gmail.com")
+                .password("123456789")
+                .build();
+
+        // Act
+        User newUser = modelMapper.map(newUnregisteredUser, User.class);
+
+        // Assert
+        Assertions.assertThat(newUser).isInstanceOf(User.class);
     }
 }
