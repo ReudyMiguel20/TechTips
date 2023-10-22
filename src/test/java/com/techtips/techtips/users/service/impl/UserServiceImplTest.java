@@ -32,7 +32,7 @@ class UserServiceImplTest {
     @Autowired
     private ModelMapper modelMapper;
 
-    static PostgreSQLContainer postgreSQLContainer = new PostgreSQLContainer("postgres:latest");
+    static PostgreSQLContainer<?> postgreSQLContainer = new PostgreSQLContainer<>("postgres:latest");
 
     @DynamicPropertySource
     static void configureProperties(DynamicPropertyRegistry registry) {
@@ -65,7 +65,7 @@ class UserServiceImplTest {
     void savingUserToDatabase() {
         // Arrange
         User newUser = User.builder()
-                .id(1L)
+                .id(3L)
                 .firstName("Mike")
                 .lastName("Carmine")
                 .email("MikeCarmine@gmail.com")
