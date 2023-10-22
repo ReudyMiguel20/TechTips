@@ -19,7 +19,7 @@ jobs:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: 1111
         ports:
-          - 8080:5432
+          - 5432:5432
 
     steps:
       - uses: actions/checkout@v3
