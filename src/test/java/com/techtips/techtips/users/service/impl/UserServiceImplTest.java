@@ -19,12 +19,15 @@ import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.testcontainers.containers.PostgreSQLContainer;
+import org.testcontainers.junit.jupiter.Container;
+import org.testcontainers.junit.jupiter.Testcontainers;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 
-@RunWith(SpringRunner.class)
-@SpringBootTest
+//@RunWith(SpringRunner.class)
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+//@Testcontainers
 class UserServiceImplTest {
 
     @Autowired
@@ -32,14 +35,19 @@ class UserServiceImplTest {
     @Autowired
     private ModelMapper modelMapper;
 
-    static PostgreSQLContainer<?> postgreSQLContainer = new PostgreSQLContainer<>("postgres:latest");
+    @Container
+    static PostgreSQLContainer<?> postgreSQLContainer = new PostgreSQLContainer<>("postgres:latest")
+            .withDatabaseName("techtips_db")
+            .withUsername("postgres")
+            .withPassword("1111")
+            .withReuse(true);
 
-    @DynamicPropertySource
-    static void configureProperties(DynamicPropertyRegistry registry) {
-        registry.add("spring.datasource.url", postgreSQLContainer::getJdbcUrl);
-        registry.add("spring.datasource.username", postgreSQLContainer::getUsername);
-        registry.add("spring.datasource.password", postgreSQLContainer::getPassword);
-    }
+//    @DynamicPropertySource
+//    static void configureProperties(DynamicPropertyRegistry registry) {
+//        registry.add("spring.datasource.url", postgreSQLContainer::getJdbcUrl);
+//        registry.add("spring.datasource.username", postgreSQLContainer::getUsername);
+//        registry.add("spring.datasource.password", postgreSQLContainer::getPassword);
+//    }
 
     @BeforeAll
     static void beforeAll() {
@@ -48,7 +56,9 @@ class UserServiceImplTest {
 
     @AfterAll
     static void afterAll() {
+        postgreSQLContainer.close();
         postgreSQLContainer.stop();
+        System.out.println("Container stopped and closed.");
     }
 
     @Mock
@@ -63,6 +73,7 @@ class UserServiceImplTest {
     @Test
     @DisplayName("Saving User in the Database")
     void savingUserToDatabase() {
+        System.out.println("Test 1");
         // Arrange
         User newUser = User.builder()
                 .id(1L)
@@ -88,6 +99,7 @@ class UserServiceImplTest {
     @Test
     @DisplayName("Map RegisterRequest DTO to User")
     void mappingRegisterRequestToUser() {
+        System.out.println("Test 2");
         // Arrange
         RegisterRequest newUnregisteredUser = RegisterRequest.builder()
                 .firstName("Mike")
