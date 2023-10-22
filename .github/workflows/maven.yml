@@ -11,16 +11,6 @@ jobs:
 
     runs-on: ubuntu-latest
 
-    services:
-      postgres:
-        image: postgres:latest
-        ports:
-          - 5432:5432
-        env:
-          POSTGRES_DB: mydatabase
-          POSTGRES_USER: myuser
-          POSTGRES_PASSWORD: mypassword
-
     steps:
       - uses: actions/checkout@v3
       - name: Set up JDK 17
@@ -31,6 +21,7 @@ jobs:
           cache: maven
       - name: Build with Maven
         run: mvn -B package --file pom.xml
+
 
   publish-job:
     runs-on: ubuntu-latest

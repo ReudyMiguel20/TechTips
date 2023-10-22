@@ -3,63 +3,29 @@ package com.techtips.techtips.users.service.impl;
 import com.techtips.techtips.users.model.dto.RegisterRequest;
 import com.techtips.techtips.users.model.entity.User;
 import com.techtips.techtips.users.repository.UserRepository;
-import com.techtips.techtips.users.service.UserService;
 import org.assertj.core.api.Assertions;
-import org.junit.Assert;
 import org.junit.jupiter.api.*;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.jdbc.EmbeddedDatabaseConnection;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.DynamicPropertyRegistry;
-import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Container;
-import org.testcontainers.junit.jupiter.Testcontainers;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 
-//@RunWith(SpringRunner.class)
+@RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 //@Testcontainers
-class UserServiceImplTest {
+class UserServiceImplUnitTest {
 
     @Autowired
     private UserServiceImpl userService;
     @Autowired
     private ModelMapper modelMapper;
-
-    @Container
-    static PostgreSQLContainer<?> postgreSQLContainer = new PostgreSQLContainer<>("postgres:latest")
-            .withDatabaseName("techtips_db")
-            .withUsername("postgres")
-            .withPassword("1111")
-            .withReuse(true);
-
-//    @DynamicPropertySource
-//    static void configureProperties(DynamicPropertyRegistry registry) {
-//        registry.add("spring.datasource.url", postgreSQLContainer::getJdbcUrl);
-//        registry.add("spring.datasource.username", postgreSQLContainer::getUsername);
-//        registry.add("spring.datasource.password", postgreSQLContainer::getPassword);
-//    }
-
-    @BeforeAll
-    static void beforeAll() {
-        postgreSQLContainer.start();
-    }
-
-    @AfterAll
-    static void afterAll() {
-        postgreSQLContainer.close();
-        postgreSQLContainer.stop();
-        System.out.println("Container stopped and closed.");
-    }
 
     @Mock
     private UserRepository userRepository;
@@ -91,7 +57,6 @@ class UserServiceImplTest {
         Assertions.assertThat(newUser).isNotNull();
         Assertions.assertThat(newUser).isInstanceOf(User.class);
         Assertions.assertThat(newUser.getId()).isEqualTo(1L);
-//        Assertions.assertThat(newUser.getFirstName()).isEqualTo("Mike");
     }
 
 
@@ -112,9 +77,5 @@ class UserServiceImplTest {
         // Assert
         Assertions.assertThat(newUser).isInstanceOf(User.class);
     }
-
-//    @Test
-////    @DisplayName("")
-//    void
 
 }
