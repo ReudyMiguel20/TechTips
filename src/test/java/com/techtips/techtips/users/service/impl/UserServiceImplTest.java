@@ -73,7 +73,6 @@ class UserServiceImplTest {
     @Test
     @DisplayName("Saving User in the Database")
     void savingUserToDatabase() {
-        System.out.println("Test 1");
         // Arrange
         User newUser = User.builder()
                 .id(1L)
@@ -99,7 +98,6 @@ class UserServiceImplTest {
     @Test
     @DisplayName("Map RegisterRequest DTO to User")
     void mappingRegisterRequestToUser() {
-        System.out.println("Test 2");
         // Arrange
         RegisterRequest newUnregisteredUser = RegisterRequest.builder()
                 .firstName("Mike")
