@@ -18,8 +18,7 @@ import org.testcontainers.junit.jupiter.Container;
 import static org.mockito.Mockito.when;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-//@Testcontainers
+@SpringBootTest
 class UserServiceImplUnitTest {
 
     @Autowired
