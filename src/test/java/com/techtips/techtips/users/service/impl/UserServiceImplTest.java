@@ -65,7 +65,7 @@ class UserServiceImplTest {
     void savingUserToDatabase() {
         // Arrange
         User newUser = User.builder()
-                .id(3L)
+                .id(1L)
                 .firstName("Mike")
                 .lastName("Carmine")
                 .email("MikeCarmine@gmail.com")
