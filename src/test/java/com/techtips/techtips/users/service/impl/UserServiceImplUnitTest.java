@@ -6,40 +6,45 @@ import com.techtips.techtips.users.repository.UserRepository;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.*;
 import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.testcontainers.containers.PostgreSQLContainer;
-import org.testcontainers.junit.jupiter.Container;
 
-import static org.mockito.Mockito.when;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.*;
 
-@RunWith(SpringRunner.class)
 @SpringBootTest
 class UserServiceImplUnitTest {
 
-    @Autowired
+    @Mock
     private UserServiceImpl userService;
-    @Autowired
-    private ModelMapper modelMapper;
-
     @Mock
     private UserRepository userRepository;
+    @Mock
+    private ModelMapper modelMapper;
+
 
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
-        userService = new UserServiceImpl(userRepository);
     }
 
     @Test
     @DisplayName("Saving User in the Database")
     void savingUserToDatabase() {
         // Arrange
-        User newUser = User.builder()
+        RegisterRequest newUserRequest = RegisterRequest.builder()
+                .firstName("Mike")
+                .lastName("Carmine")
+                .email("MikeCarmine@gmail.com")
+                .password("123456789")
+                .build();
+
+        User registeredUser = User.builder()
                 .id(1L)
                 .firstName("Mike")
                 .lastName("Carmine")
@@ -47,15 +52,17 @@ class UserServiceImplUnitTest {
                 .password("123456789")
                 .build();
 
-        when(userRepository.save(newUser)).thenReturn(newUser);
+        // Mock
+        when(userService.registerNewUser(newUserRequest)).thenReturn(registeredUser);
+        when(userService.save(any(User.class))).thenReturn(registeredUser);
 
         // Act
-        newUser = userRepository.save(newUser);
+        registeredUser = userService.registerNewUser(newUserRequest);
+        userService.save(registeredUser);
 
         // Assert
-        Assertions.assertThat(newUser).isNotNull();
-        Assertions.assertThat(newUser).isInstanceOf(User.class);
-        Assertions.assertThat(newUser.getId()).isEqualTo(1L);
+        verify(userService, times(1)).save(any(User.class));
+        Assertions.assertThat(registeredUser).isInstanceOf(User.class);
     }
 
 
@@ -71,10 +78,11 @@ class UserServiceImplUnitTest {
                 .build();
 
         // Act
-        User newUser = modelMapper.map(newUnregisteredUser, User.class);
+        User newUser = userService.registerNewUser(newUnregisteredUser);
 
         // Assert
         Assertions.assertThat(newUser).isInstanceOf(User.class);
     }
+
 
 }

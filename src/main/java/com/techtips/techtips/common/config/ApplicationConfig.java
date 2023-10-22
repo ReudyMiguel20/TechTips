@@ -1,5 +1,6 @@
 package com.techtips.techtips.common.config;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.techtips.techtips.users.exception.error.UserNotFound;
 import com.techtips.techtips.users.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -30,6 +31,11 @@ public class ApplicationConfig {
     @Bean
     public ModelMapper modelMapper() {
         return new ModelMapper();
+    }
+
+    @Bean
+    public ObjectMapper objectMapper() {
+        return new ObjectMapper();
     }
 
 }
