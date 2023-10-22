@@ -34,6 +34,17 @@ jobs:
 
   publish-job:
     runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:latest
+        env:
+          POSTGRES_DB: techtips_db
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: 1111
+        ports:
+          - 5432:5432
+
     needs: build_test
     steps:
       - uses: actions/checkout@v3
