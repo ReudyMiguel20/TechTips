@@ -6,9 +6,7 @@ import com.techtips.techtips.users.repository.UserRepository;
 import com.techtips.techtips.users.service.UserService;
 import org.assertj.core.api.Assertions;
 import org.junit.Assert;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
@@ -17,7 +15,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.jdbc.EmbeddedDatabaseConnection;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.DynamicPropertyRegistry;
+import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.testcontainers.containers.PostgreSQLContainer;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
@@ -30,6 +31,25 @@ class UserServiceImplTest {
     private UserServiceImpl userService;
     @Autowired
     private ModelMapper modelMapper;
+
+    static PostgreSQLContainer postgreSQLContainer = new PostgreSQLContainer("postgres:latest");
+
+    @DynamicPropertySource
+    static void configureProperties(DynamicPropertyRegistry registry) {
+        registry.add("spring.datasource.url", postgreSQLContainer::getJdbcUrl);
+        registry.add("spring.datasource.username", postgreSQLContainer::getUsername);
+        registry.add("spring.datasource.password", postgreSQLContainer::getPassword);
+    }
+
+    @BeforeAll
+    static void beforeAll() {
+        postgreSQLContainer.start();
+    }
+
+    @AfterAll
+    static void afterAll() {
+        postgreSQLContainer.stop();
+    }
 
     @Mock
     private UserRepository userRepository;
@@ -58,8 +78,10 @@ class UserServiceImplTest {
         newUser = userRepository.save(newUser);
 
         // Assert
+        Assertions.assertThat(newUser).isNotNull();
         Assertions.assertThat(newUser).isInstanceOf(User.class);
         Assertions.assertThat(newUser.getId()).isEqualTo(1L);
+//        Assertions.assertThat(newUser.getFirstName()).isEqualTo("Mike");
     }
 
 
@@ -80,4 +102,9 @@ class UserServiceImplTest {
         // Assert
         Assertions.assertThat(newUser).isInstanceOf(User.class);
     }
+
+//    @Test
+////    @DisplayName("")
+//    void
+
 }
