@@ -86,5 +86,23 @@ class PostServiceImplUnitTest {
         Assertions.assertThat(registeredUser).isInstanceOf(User.class);
     }
 
+    @Test
+    @DisplayName("Verify that Registered User has a Crypted Password")
+    void cryptUserPassword() {
+        // Arrange
+        RegisterRequest newUserRequest = RegisterRequest.builder()
+                .firstName("Mike")
+                .lastName("Carmine")
+                .email("MikeCarmine@gmail.com")
+                .password("123456789")
+                .build();
+
+        // Act
+        User registeredUser = userService.registerNewUser(newUserRequest);
+
+        //Assert
+        Assertions.assertThat(registeredUser.getPassword()).isNotEqualTo("123456789");
+    }
+
 
 }

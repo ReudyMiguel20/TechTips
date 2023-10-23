@@ -7,6 +7,7 @@ import com.techtips.techtips.users.repository.UserRepository;
 import com.techtips.techtips.users.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,10 +18,14 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final ModelMapper modelMapper;
+    private final PasswordEncoder passwordEncoder;
 
     @Override
     public User registerNewUser(RegisterRequest newUser) {
-        return modelMapper.map(newUser, User.class);
+        User user = modelMapper.map(newUser, User.class);
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+
+        return user;
     }
 
     @Override
