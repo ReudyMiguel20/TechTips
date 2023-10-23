@@ -10,6 +10,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import static org.mockito.ArgumentMatchers.any;
@@ -19,11 +20,14 @@ import static org.mockito.Mockito.*;
 class UserServiceImplUnitTest {
 
     @Mock
-    private UserServiceImpl userService;
+    private UserServiceImpl userServiceMock;
     @Mock
     private UserRepository userRepository;
     @Mock
     private ModelMapper modelMapper;
+
+    @Autowired
+    private UserServiceImpl userService;
 
 
     @BeforeEach
@@ -51,38 +55,36 @@ class UserServiceImplUnitTest {
                 .build();
 
         // Mock
-        when(userService.registerNewUser(newUserRequest)).thenReturn(registeredUser);
-        when(userService.save(any(User.class))).thenReturn(registeredUser);
+        when(userServiceMock.registerNewUser(newUserRequest)).thenReturn(registeredUser);
+        when(userServiceMock.save(any(User.class))).thenReturn(registeredUser);
 
         // Act
-        registeredUser = userService.registerNewUser(newUserRequest);
-        userService.save(registeredUser);
+        registeredUser = userServiceMock.registerNewUser(newUserRequest);
+        userServiceMock.save(registeredUser);
 
         // Assert
-        verify(userService, times(1)).save(any(User.class));
+        verify(userServiceMock, times(1)).save(any(User.class));
         Assertions.assertThat(registeredUser).isInstanceOf(User.class);
     }
 
 
-//    @Test
-//    @DisplayName("Map RegisterRequest DTO to User")
-//    void mappingRegisterRequestToUser() {
-//        // Arrange
-//        RegisterRequest newUnregisteredUser = RegisterRequest.builder()
-//                .firstName("Mike")
-//                .lastName("Carmine")
-//                .email("MikeCarmine@gmail.com")
-//                .password("123456789")
-//                .build();
-//
-//        when(userService.registerNewUser(newUnregisteredUser))
-//
-//        // Act
-//        User registeredNewUser = userService.registerNewUser(newUnregisteredUser);
-//
-//        // Assert
-//        Assertions.assertThat(registeredNewUser).isInstanceOf(User.class);
-//    }
+    @Test
+    @DisplayName("Map Register Request to User Object")
+    void mapRegisterRequestToUser() {
+        // Arrange
+        RegisterRequest newUserRequest = RegisterRequest.builder()
+                .firstName("Mike")
+                .lastName("Carmine")
+                .email("MikeCarmine@gmail.com")
+                .password("123456789")
+                .build();
+
+        // Act
+        User registeredUser = userService.registerNewUser(newUserRequest);
+
+        // Assert
+        Assertions.assertThat(registeredUser).isInstanceOf(User.class);
+    }
 
 
 }
