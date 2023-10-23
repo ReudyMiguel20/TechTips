@@ -12,7 +12,6 @@ import org.mockito.MockitoAnnotations;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
@@ -101,7 +100,7 @@ class PostServiceImplUnitTest {
         User registeredUser = userService.registerNewUser(newUserRequest);
 
         //Assert
-        Assertions.assertThat(registeredUser.getPassword()).isNotEqualTo("123456789");
+        Assertions.assertThat(registeredUser.getPassword()).contains("$2a$12$");
     }
 
 
