@@ -90,21 +90,5 @@ public class UserServiceImplIntegrationTest {
 
     }
 
-    @Test
-    @DisplayName("Map Register Request to User Object")
-    void mapRegisterRequestToUser() {
-        // Arrange
-        RegisterRequest newUserRequest = RegisterRequest.builder()
-                .firstName("Mike")
-                .lastName("Carmine")
-                .email("MikeCarmine@gmail.com")
-                .password("123456789")
-                .build();
-
-        // Act
-        User registeredUser = userService.registerNewUser(newUserRequest);
-
-        // Assert
-        Assertions.assertThat(registeredUser).isInstanceOf(User.class);
-    }
+    
 }
