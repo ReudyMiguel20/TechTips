@@ -7,4 +7,6 @@ public interface UserService {
     User registerNewUser(RegisterRequest newUser);
 
     Object save(User registeredUser);
+
+    void deleteAllUsers();
 }

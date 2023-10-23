@@ -4,15 +4,13 @@ import com.techtips.techtips.users.model.dto.RegisterRequest;
 import com.techtips.techtips.users.model.entity.User;
 import com.techtips.techtips.users.repository.UserRepository;
 import org.assertj.core.api.Assertions;
-import org.junit.jupiter.api.*;
-import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit4.SpringRunner;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
@@ -66,23 +64,25 @@ class UserServiceImplUnitTest {
     }
 
 
-    @Test
-    @DisplayName("Map RegisterRequest DTO to User")
-    void mappingRegisterRequestToUser() {
-        // Arrange
-        RegisterRequest newUnregisteredUser = RegisterRequest.builder()
-                .firstName("Mike")
-                .lastName("Carmine")
-                .email("MikeCarmine@gmail.com")
-                .password("123456789")
-                .build();
-
-        // Act
-        User newUser = userService.registerNewUser(newUnregisteredUser);
-
-        // Assert
-        Assertions.assertThat(newUser).isInstanceOf(User.class);
-    }
+//    @Test
+//    @DisplayName("Map RegisterRequest DTO to User")
+//    void mappingRegisterRequestToUser() {
+//        // Arrange
+//        RegisterRequest newUnregisteredUser = RegisterRequest.builder()
+//                .firstName("Mike")
+//                .lastName("Carmine")
+//                .email("MikeCarmine@gmail.com")
+//                .password("123456789")
+//                .build();
+//
+//        when(userService.registerNewUser(newUnregisteredUser))
+//
+//        // Act
+//        User registeredNewUser = userService.registerNewUser(newUnregisteredUser);
+//
+//        // Assert
+//        Assertions.assertThat(registeredNewUser).isInstanceOf(User.class);
+//    }
 
 
 }

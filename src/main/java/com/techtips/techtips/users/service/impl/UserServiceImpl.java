@@ -17,13 +17,16 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User registerNewUser(RegisterRequest newUser) {
-        User registeredUser = modelMapper.map(newUser, User.class);
-
-        return registeredUser;
+        return modelMapper.map(newUser, User.class);
     }
 
     @Override
     public User save(User registeredUser) {
         return userRepository.save(registeredUser);
+    }
+
+    @Override
+    public void deleteAllUsers() {
+        userRepository.deleteAll();
     }
 }

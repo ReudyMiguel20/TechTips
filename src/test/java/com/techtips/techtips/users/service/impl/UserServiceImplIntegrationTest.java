@@ -5,20 +5,14 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.techtips.techtips.users.model.dto.RegisterRequest;
 import com.techtips.techtips.users.model.entity.User;
 import org.assertj.core.api.Assertions;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.mockito.Mock;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Container;
-
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class UserServiceImplIntegrationTest {
@@ -60,7 +54,13 @@ public class UserServiceImplIntegrationTest {
         System.out.println("Container stopped and closed.");
     }
 
+    @BeforeEach
+    void beforeEach() {
+        userService.deleteAllUsers();
+    }
+
     @Test
+    @DisplayName("Given a Register Request, creates a New User and persist to Database")
     void createNewUserAndReturn() throws Exception {
         // Arrange
         RegisterRequest newUserRequest = RegisterRequest.builder()
@@ -88,6 +88,26 @@ public class UserServiceImplIntegrationTest {
 //                        .accept("application/json"))
 //                .andExpect(status().isOk())
 //                .andExpect(MockMvcResultMatchers.jsonPath("$.id").exists());
+
+    }
+
+    @Test
+    @DisplayName("Map Register Request to User Object")
+    void mapRegisterRequestToUser() {
+        // Arrange
+        RegisterRequest newUserRequest = RegisterRequest.builder()
+                .firstName("Mike")
+                .lastName("Carmine")
+                .email("MikeCarmine@gmail.com")
+                .password("123456789")
+                .build();
+
+        // Act
+        User registeredUser = userService.registerNewUser(newUserRequest);
+
+        // Assert
+        Assertions.assertThat(registeredUser).isInstanceOf(User.class);
+
 
     }
 }
