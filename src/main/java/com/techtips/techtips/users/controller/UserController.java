@@ -1,9 +1,10 @@
 package com.techtips.techtips.users.controller;
 
+import com.techtips.techtips.users.model.dto.RegisterRequest;
 import com.techtips.techtips.users.service.UserService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/users")
@@ -16,6 +17,16 @@ public class UserController {
 //    public ResponseEntity<User> createNewUser(RegisterRequest request) {
 //        userService
 //    }
+
+    @PostMapping("/register")
+    public ResponseEntity<RegisterRequest> testUser(@RequestBody RegisterRequest registerRequest) {
+        return ResponseEntity.ok(registerRequest);
+    }
+
+    @GetMapping("/test")
+    public String createNewUser(@RequestBody RegisterRequest registerRequest) {
+        return registerRequest.getEmail();
+    }
 
 
 }
