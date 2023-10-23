@@ -1,6 +1,6 @@
 package com.techtips.techtips.common.exceptionhandler;
 
-import com.techtips.techtips.users.exception.error.UserNotFound;
+import com.techtips.techtips.users.exception.error.UserNotFoundException;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatusCode;
@@ -36,7 +36,7 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
         return ResponseEntity.badRequest().body(customErrorMessage);
     }
 
-    @ExceptionHandler(UserNotFound.class)
+    @ExceptionHandler(UserNotFoundException.class)
     public static ResponseEntity<CustomErrorMessage> userNotFound() {
         HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
         String path = request.getRequestURI();

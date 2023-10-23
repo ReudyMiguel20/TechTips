@@ -1,7 +1,7 @@
 package com.techtips.techtips.common.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.techtips.techtips.users.exception.error.UserNotFound;
+import com.techtips.techtips.users.exception.error.UserNotFoundException;
 import com.techtips.techtips.users.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -20,7 +20,7 @@ public class ApplicationConfig {
     @Bean
     public UserDetailsService userDetailsService() {
         return username -> userRepository.findByEmail(username)
-                .orElseThrow(UserNotFound::new);
+                .orElseThrow(UserNotFoundException::new);
     }
 
     @Bean

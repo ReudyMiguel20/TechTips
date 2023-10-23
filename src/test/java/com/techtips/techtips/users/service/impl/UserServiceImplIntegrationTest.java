@@ -2,18 +2,16 @@ package com.techtips.techtips.users.service.impl;
 
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.techtips.techtips.users.exception.error.UserNotFoundException;
 import com.techtips.techtips.users.model.dto.RegisterRequest;
 import com.techtips.techtips.users.model.entity.User;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
 import org.assertj.core.api.Assertions;
+import org.junit.Assert;
 import org.junit.jupiter.api.*;
-import org.mockito.Mock;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 
@@ -90,5 +88,39 @@ public class UserServiceImplIntegrationTest {
 
     }
 
-    
+    @Test
+    @DisplayName("Delete a user by ID from the database")
+    void deleteUserById() {
+        // Arrange
+        User firstUser = User.builder()
+                .id(1L)
+                .firstName("Mike")
+                .lastName("Carmine")
+                .email("MikeCarmine@gmail.com")
+                .password("123456789")
+                .build();
+
+        User secondUser = User.builder()
+                .id(2L)
+                .firstName("Marcus")
+                .lastName("Tedgief")
+                .email("Marcustedgief@gmail.com")
+                .password("codingisfun")
+                .build();
+
+        userService.save(firstUser);
+        userService.save(secondUser);
+
+        // Act
+        userService.deleteUserById(1L);
+
+        // Assert
+        Assert.assertThrows(UserNotFoundException.class, () -> {
+            userService.findById(1L);
+        });
+
+        Assertions.assertThat(userService.getAllUsers()).isNotEmpty();
+    }
+
+
 }
