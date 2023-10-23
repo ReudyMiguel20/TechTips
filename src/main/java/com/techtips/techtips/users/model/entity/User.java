@@ -1,5 +1,6 @@
 package com.techtips.techtips.users.model.entity;
 
+import com.techtips.techtips.posts.model.entity.Post;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
@@ -11,6 +12,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
+import java.util.List;
 
 
 @Builder
@@ -40,6 +42,9 @@ public class User implements UserDetails {
     @NotNull(message = "Password shouldn't be null")
     @NotEmpty(message = "Password shouldn't be null")
     private String password;
+
+    @OneToMany(mappedBy = "author")
+    private List<Post> userPosts;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

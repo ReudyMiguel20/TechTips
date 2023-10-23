@@ -17,7 +17,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 @SpringBootTest
-class UserServiceImplUnitTest {
+class PostServiceImplUnitTest {
 
     @Mock
     private UserServiceImpl userServiceMock;

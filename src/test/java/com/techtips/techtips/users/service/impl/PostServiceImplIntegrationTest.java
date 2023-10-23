@@ -16,7 +16,7 @@ import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class UserServiceImplIntegrationTest {
+public class PostServiceImplIntegrationTest {
 
     @Autowired
     private ModelMapper modelMapper;
