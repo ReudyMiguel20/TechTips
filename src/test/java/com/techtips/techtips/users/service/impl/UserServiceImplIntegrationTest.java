@@ -4,6 +4,9 @@ package com.techtips.techtips.users.service.impl;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.techtips.techtips.users.model.dto.RegisterRequest;
 import com.techtips.techtips.users.model.entity.User;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.*;
 import org.mockito.Mock;
@@ -23,10 +26,6 @@ public class UserServiceImplIntegrationTest {
     private ObjectMapper objectMapper;
     @Autowired
     private UserServiceImpl userService;
-
-
-    @Mock
-    private MockMvc mockMvc;
 
     @Container
     static PostgreSQLContainer<?> postgreSQLContainer = new PostgreSQLContainer<>("postgres:latest")
@@ -107,7 +106,5 @@ public class UserServiceImplIntegrationTest {
 
         // Assert
         Assertions.assertThat(registeredUser).isInstanceOf(User.class);
-
-
     }
 }
