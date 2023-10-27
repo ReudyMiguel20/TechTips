@@ -1,5 +1,6 @@
 package com.techtips.techtips.auth.service.impl;
 
+import com.techtips.techtips.auth.dto.AuthenticationRequest;
 import com.techtips.techtips.auth.dto.AuthenticationToken;
 import com.techtips.techtips.auth.service.AuthService;
 import com.techtips.techtips.common.jwt.JwtService;
@@ -8,6 +9,7 @@ import com.techtips.techtips.users.model.entity.User;
 import com.techtips.techtips.users.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -29,4 +31,18 @@ public class AuthServiceImpl implements AuthService {
                 .build();
     }
 
+    @Override
+    public AuthenticationToken authenticateUser(AuthenticationRequest authRequest) {
+        User user = userService.findByEmail(authRequest.getEmail());
+
+        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
+                authRequest.getEmail(), authRequest.getPassword())
+        );
+
+        String jwtToken = jwtService.generateToken(user);
+
+        return AuthenticationToken.builder()
+                .token(jwtToken)
+                .build();
+    }
 }

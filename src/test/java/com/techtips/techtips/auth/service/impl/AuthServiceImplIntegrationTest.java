@@ -1,6 +1,7 @@
 package com.techtips.techtips.auth.service.impl;
 
 
+import com.techtips.techtips.auth.dto.AuthenticationRequest;
 import com.techtips.techtips.auth.dto.AuthenticationToken;
 import com.techtips.techtips.auth.service.AuthService;
 import com.techtips.techtips.users.model.dto.RegisterRequest;
@@ -66,7 +67,33 @@ class AuthServiceImplIntegrationTest {
         // Act
         AuthenticationToken token = authService.register(newUserRequest);
 
-        //JWT Token always begin with ''eyJhbGciOiJIUzI1NiJ9''
+        //JWT Token always begin with 'eyJhbGciOiJIUzI1NiJ9'
+        // Assert
+        Assertions.assertThat(token.getToken()).contains("eyJhbGciOiJIUzI1NiJ9");
+    }
+
+    @Test
+    @DisplayName("Refresh JWT Token To an Existing User in Database")
+    void refreshJWTTokenExistingUser() {
+        // Arrange
+        RegisterRequest newUserRequest = RegisterRequest.builder()
+                .firstName("Mike")
+                .lastName("Carmine")
+                .email("MikeCarmine@gmail.com")
+                .password("123456789")
+                .build();
+
+        User user = userService.registerNewUserAndAssignRole(newUserRequest);
+
+        AuthenticationRequest authRequest = AuthenticationRequest.builder()
+                .email(user.getEmail())
+                .password("123456789")
+                .build();
+
+        //Act
+        AuthenticationToken token = authService.authenticateUser(authRequest);
+
+        // JWT Token always begin with 'eyJhbGciOiJIUzI1NiJ9'
         // Assert
         Assertions.assertThat(token.getToken()).contains("eyJhbGciOiJIUzI1NiJ9");
     }

@@ -1,5 +1,6 @@
 package com.techtips.techtips.auth.controller;
 
+import com.techtips.techtips.auth.dto.AuthenticationRequest;
 import com.techtips.techtips.auth.dto.AuthenticationToken;
 import com.techtips.techtips.auth.service.AuthService;
 import com.techtips.techtips.users.model.dto.RegisterRequest;
@@ -20,5 +21,10 @@ public class AuthenticationController {
     @PostMapping("/register")
     public ResponseEntity<AuthenticationToken> registerNewUser(@RequestBody RegisterRequest request) {
         return ResponseEntity.ok(authService.register(request));
+    }
+
+    @PostMapping
+    public ResponseEntity<AuthenticationToken> authenticateExistingUser(@RequestBody AuthenticationRequest request) {
+        return ResponseEntity.ok(authService.authenticateUser(request));
     }
 }
