@@ -14,8 +14,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 
+
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class PostServiceImplIntegrationTest {
+public class UserServiceImplIntegrationTest {
 
     @Autowired
     private ModelMapper modelMapper;
@@ -67,7 +68,7 @@ public class PostServiceImplIntegrationTest {
                 .build();
 
         //Act
-        User registeredUser = userService.registerNewUser(newUserRequest);
+        User registeredUser = userService.registerNewUserAndAssignRole(newUserRequest);
         userService.save(registeredUser);
 
         //Assert
@@ -92,7 +93,6 @@ public class PostServiceImplIntegrationTest {
     void deleteUserById() {
         // Arrange
         User firstUser = User.builder()
-                .id(1L)
                 .firstName("Mike")
                 .lastName("Carmine")
                 .email("MikeCarmine@gmail.com")
@@ -100,7 +100,6 @@ public class PostServiceImplIntegrationTest {
                 .build();
 
         User secondUser = User.builder()
-                .id(2L)
                 .firstName("Marcus")
                 .lastName("Tedgief")
                 .email("Marcustedgief@gmail.com")
@@ -119,6 +118,36 @@ public class PostServiceImplIntegrationTest {
         });
 
         Assertions.assertThat(userService.getAllUsers()).isNotEmpty();
+    }
+
+    @Test
+    @DisplayName("Create Two Users: First User should be ADMIN, Second User should be USER")
+    void createTwoUsersWithRoles() {
+        // Arrange
+        RegisterRequest firstUserRequest = RegisterRequest.builder()
+                .firstName("Mike")
+                .lastName("Carmine")
+                .email("MikeCarmine@gmail.com")
+                .password("123456789")
+                .build();
+
+        RegisterRequest secondUserRequest = RegisterRequest.builder()
+                .firstName("Marcus")
+                .lastName("Tedgief")
+                .email("Marcustedgief@gmail.com")
+                .password("codingisfun")
+                .build();
+
+        User firstUser = userService.registerNewUserAndAssignRole(firstUserRequest);
+        User secondUser = userService.registerNewUserAndAssignRole(secondUserRequest);
+
+        // Act
+        userService.save(firstUser);
+        userService.save(secondUser);
+
+        // Assert
+        Assertions.assertThat(firstUser.getRole().toString()).isEqualTo("ADMIN");
+        Assertions.assertThat(secondUser.getRole().toString()).isEqualTo("USER");
     }
 
 

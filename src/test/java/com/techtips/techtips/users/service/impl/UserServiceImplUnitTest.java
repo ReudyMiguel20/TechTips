@@ -16,7 +16,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 @SpringBootTest
-class PostServiceImplUnitTest {
+class UserServiceImplUnitTest {
 
     @Mock
     private UserServiceImpl userServiceMock;
@@ -54,11 +54,11 @@ class PostServiceImplUnitTest {
                 .build();
 
         // Mock
-        when(userServiceMock.registerNewUser(newUserRequest)).thenReturn(registeredUser);
+        when(userServiceMock.registerNewUserAndAssignRole(newUserRequest)).thenReturn(registeredUser);
         when(userServiceMock.save(any(User.class))).thenReturn(registeredUser);
 
         // Act
-        registeredUser = userServiceMock.registerNewUser(newUserRequest);
+        registeredUser = userServiceMock.registerNewUserAndAssignRole(newUserRequest);
         userServiceMock.save(registeredUser);
 
         // Assert
@@ -79,7 +79,7 @@ class PostServiceImplUnitTest {
                 .build();
 
         // Act
-        User registeredUser = userService.registerNewUser(newUserRequest);
+        User registeredUser = userService.registerNewUserAndAssignRole(newUserRequest);
 
         // Assert
         Assertions.assertThat(registeredUser).isInstanceOf(User.class);
@@ -97,7 +97,7 @@ class PostServiceImplUnitTest {
                 .build();
 
         // Act
-        User registeredUser = userService.registerNewUser(newUserRequest);
+        User registeredUser = userService.registerNewUserAndAssignRole(newUserRequest);
 
         //Assert
         Assertions.assertThat(registeredUser.getPassword()).contains("$2a$12$");

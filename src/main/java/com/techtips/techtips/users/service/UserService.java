@@ -4,9 +4,11 @@ import com.techtips.techtips.users.model.dto.RegisterRequest;
 import com.techtips.techtips.users.model.entity.User;
 
 public interface UserService {
-    User registerNewUser(RegisterRequest newUser);
+    User registerNewUserAndAssignRole(RegisterRequest newUser);
 
     Object save(User registeredUser);
 
     void deleteAllUsers();
+
+    User findByEmail(String email);
 }
