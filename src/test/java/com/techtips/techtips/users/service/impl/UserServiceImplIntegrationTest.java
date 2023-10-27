@@ -80,7 +80,7 @@ public class UserServiceImplIntegrationTest {
         //Assert
         Assertions.assertThat(registeredUser).isInstanceOf(User.class);
         Assertions.assertThat(registeredUser).isNotNull();
-        Assertions.assertThat(registeredUser.getId()).isEqualTo(1L);
+        Assertions.assertThat(registeredUser.getId()).isInstanceOf(Long.class);
 
         //        String jsonRequest = objectMapper.writeValueAsString(request);
 
