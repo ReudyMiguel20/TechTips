@@ -46,6 +46,11 @@ class AuthServiceImplIntegrationTest {
         userService.deleteAllUsers();
     }
 
+    @AfterEach
+    void afterEach() {
+        userService.deleteAllUsers();
+    }
+
 
     @Test
     @DisplayName("Generate JWT Token for Registering User")

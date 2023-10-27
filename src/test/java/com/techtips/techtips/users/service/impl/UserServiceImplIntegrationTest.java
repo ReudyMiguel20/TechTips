@@ -49,10 +49,16 @@ public class UserServiceImplIntegrationTest {
         postgreSQLContainer.close();
         postgreSQLContainer.stop();
         System.out.println("Container stopped and closed.");
+
     }
 
     @BeforeEach
     void beforeEach() {
+        userService.deleteAllUsers();
+    }
+
+    @AfterEach
+    void afterEach() {
         userService.deleteAllUsers();
     }
 
